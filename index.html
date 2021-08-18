@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang = "en-US" dir = "ltr">
+    <head>
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width; initial-scale=1.0">
+        <title>Chexlogger</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel = "stylesheet" href = "/css/index.css">
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </head>
+    <body class = 'bg-dark'>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+                <div class="container-fluid">
+                    <a class="navbar-brand blacksword" style="font-size: 17pt;" href="index.html">Chexlogger</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">New Entry</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+              </nav>
+        </header>
+        @for receipt in receipts
+            <div class="mt-4 bg-light mx-3">
+                <div class="row text-600 text-white bg-danger py-25">
+                    <div class="d-none d-sm-block col-1">#</div>
+                    <div class="col-9 col-sm-5">Description</div>
+                    <div class="d-none d-sm-block col-4 col-sm-2">Qty</div>
+                    <div class="d-none d-sm-block col-sm-2">Unit Price</div>
+                    <div class="col-2">Amount</div>
+                </div>
+            
+                <div class="text-95 text-secondary-d3">
+                    @for i, item in receipt.items
+                        <div class="row mb-2 mb-sm-0 py-25">
+                            <div class="d-none d-sm-block col-1">
+                                <script>document.write(parseInt(@i) + 1)</script>
+                            </div>
+                            <div class="col-9 col-sm-5">@item.description</div>
+                            <div class="d-none d-sm-block col-2">@item.quantity</div>
+                            <div class="d-none d-sm-block col-2 text-95">
+                                &#36;<script>document.write(parseFloat(@item.price).toFixed(2))</script>
+                            </div>
+                            <div class="col-2 text-secondary-d2">
+                                &#36;<script>document.write((parseInt(@item.quantity) * parseFloat(@item.price)).toFixed(2))</script>
+                                @receipt.if_tip_then_percent()
+                            </div>
+                        </div>
+                    @end
+                </div>
+            
+                <div class="row border-b-2 brc-default-l2"></div>
+            
+                <div class="row mt-3">
+                    <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
+                        <p>@receipt.description</p>
+                        <small style="position: absolute; bottom: 7px;" class="text-muted">@receipt.date.str()</small>
+                    </div>
+            
+                    <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
+                        <div class="row my-2">
+                            <div class="col-7 text-right">
+                                Subtotal
+                            </div>
+                            <div class="col-5">
+                                <span class="text-120 text-muted">
+                                    &#36;<script>document.write(parseFloat(@receipt.subtotal()).toFixed(2))</script>
+                                </span>
+                            </div>
+                        </div>
+            
+                        @if receipt.discount != 0.0
+                            <div className="row my-2">
+                                <div className="col-7 text-right">
+                                    Discount
+                                </div>
+                                <div className="col-5">
+                                    <span className="text-120 text-muted">
+                                        &#36;<script>document.write(parseFloat(@receipt.discount).toFixed(2))</script>
+                                    </span>
+                                </div>
+                            </div>
+                        @end
+            
+                        <div class="row my-2">
+                            <div class="col-7 text-right">
+                                Tax
+                            </div>
+                            <div class="col-5">
+                                <span class="text-110 text-muted">
+                                    &#36;<script>document.write(parseFloat(@receipt.taxes).toFixed(2))</script>
+                                </span>
+                            </div>
+                        </div>
+            
+                        <div class="row my-2 align-items-center bgc-primary-l3 p-2" id="total">
+                            <div class="col-7 text-right">
+                                Total
+                            </div>
+                            <div class="col-5">
+                                <span class="text-150 text-success-d3 opacity-2">
+                                    &#36;<script>document.write(parseFloat(@receipt.total()).toFixed(2))</script>
+                                </span>
+                                ~ @receipt.payment_method
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @end
+    </body>
+</html>

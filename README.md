@@ -1,2 +1,9 @@
 # Chexlogger
-This will be an application to help me budget my income. Also, this is my first time using React, so feel free to correct any poor coding.
+An application written in V to log and view info about past purchases.
+
+## Usage
+You can create an executable by executing `v .` in the terminal. Or you
+can run from source by using `v run .`.
+
+## Depends
+V is the only dependency. You can get it [here](https://vlang.io/).

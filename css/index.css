@@ -1,13 +1,15 @@
-body{
-    margin-top:20px;
-    color: #484b51;
+@font-face {
+    font-family: 'Blacksword';
+    src: url('/fonts/Blacksword.otf');
+    font-weight: normal;
+    font-style: normal;
 }
+
+.blacksword { font-family: Blacksword; }
+
 .mt-4 {
     border-radius: 3px;
     box-shadow: 0 1px 3px rgba(200, 200, 200, 0.8);
-}
-.text-secondary-d1 {
-    color: #728299!important;
 }
 .page-header {
     margin: 0 0 1rem;
@@ -92,7 +94,6 @@ hr {
 .w-2 {
     width: 1rem;
 }
-
 .text-120 {
     font-size: 120%!important;
 }
@@ -124,4 +125,8 @@ hr {
 
 .py-25:last-of-type {
     box-shadow: 0 -0.5px 1px rgba(200, 200, 200, 0.8) inset;
+}
+
+.row {
+    margin: 0;
 }
