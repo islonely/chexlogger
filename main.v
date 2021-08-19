@@ -1,13 +1,11 @@
 module main
 
-import math
 import os
 import sqlite
 import time
 import vweb
 
 const(
-	currency_calc_precision = 1000
 	initdb_sql = $embed_file('initdb.sql')
 )
 
@@ -20,12 +18,13 @@ fn main() {
 
 	mut app := &App{}
 	app.mount_static_folder_at(os.resource_abs_path('.'), '/')
-	vweb.run(app, 4444)
+	vweb.run(app, port)
 }
 
 ['/index']
 pub fn (mut app App) index() vweb.Result {
-	mut db := sqlite.connect('chexlogger.db') or {
+	println('FILE PATH (' + dbfile() + ')')
+	mut db := sqlite.connect(dbfile()) or {
 		println('Err: Failed to connect to SQLite database. This usually means the .db file is missing or corrupted.')
 		exit(1)
 	}
@@ -54,6 +53,17 @@ pub fn (mut app App) index() vweb.Result {
 	return $vweb.html()
 }
 
+['/new']
+pub fn (mut app App) new() vweb.Result {
+	return $vweb.html()
+}
+
+['/new'; post]
+pub fn (mut app App) new_entry() vweb.Result {
+
+	return app.redirect('/')
+}
+
 fn parse_rows(db sqlite.DB, rows []sqlite.Row) []Receipt {
 	mut receipts := []Receipt{}
 
@@ -74,7 +84,7 @@ fn parse_rows(db sqlite.DB, rows []sqlite.Row) []Receipt {
 			item := Item{
 				description: irow.vals[1]
 				quantity: irow.vals[2].int()
-				price: irow.vals[3].f64() / currency_calc_precision
+				price: irow.vals[3].f64() / 1000
 			}
 			items << item
 		}
@@ -83,8 +93,8 @@ fn parse_rows(db sqlite.DB, rows []sqlite.Row) []Receipt {
 		mut receipt := Receipt{
 			description: row.vals[1]
 			date: time.parse(row.vals[2]) or {time.Time{}}
-			taxes: row.vals[3].f64() / currency_calc_precision
-			discount: row.vals[4].f64() / currency_calc_precision
+			taxes: row.vals[3].f64() / 1000
+			discount: row.vals[4].f64() / 1000
 			payment_method: row.vals[5]
 			items: items
 		}
@@ -125,8 +135,12 @@ fn sqlite_err(n int) string {
 	}
 }
 
+fn dbfile() string {
+	return if store_local {''} else {os.home_dir() + os.path_separator}  + database_file
+}
+
 fn dbinit() {
-	cmd := 'sqlite3 chexlogger.db "' + initdb_sql.to_string() + '"'
+	cmd := 'sqlite3 ' + dbfile() + ' "' + initdb_sql.to_string() + '"'
 	$if debug {
 		println(cmd)
 	}

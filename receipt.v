@@ -1,3 +1,6 @@
+import time
+import math
+
 // Item represents one item on a receipt
 struct Item {
 	price f64
