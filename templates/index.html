@@ -2,15 +2,28 @@
 <html lang = "en-US" dir = "ltr">
     <head>
         <meta charset = "utf-8">
-        <meta name = "viewport" content = "width=device-width; initial-scale=1.0">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
         <title>Chexlogger</title>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel = "stylesheet" href = "/css/index.css">
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <!--
+            I was getting errors when importing these (wrong mime-type for
+            css and error 400 from js). I think it has something to do with
+            V. I know it uses strict mime-types in certain circumstances.
+        -->
+        <!--         
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+         -->
+        <style>
+            @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css");
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script>
+            $.getScript('https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js')
+        </script>
+        
+        <link rel = "stylesheet" href = "index.css">
     </head>
     <body class = 'bg-dark'>
         <header>
@@ -30,9 +43,9 @@
                 </div>
             </nav>
         </header>
-        
+
         @for receipt in receipts
-            <div class="mt-4 bg-light mx-3">
+            <div class="receipt mt-4 bg-light">
                 <div class="row text-600 text-white bg-danger py-25">
                     <div class="d-none d-sm-block col-1">#</div>
                     <div class="col-9 col-sm-5">Description</div>
@@ -43,7 +56,7 @@
             
                 <div class="text-95 text-secondary-d3">
                     @for i, item in receipt.items
-                        <div class="row mb-2 mb-sm-0 py-25">
+                        <div class="item row mb-2 mb-sm-0 py-25">
                             <div class="d-none d-sm-block col-1">
                                 <script>document.write(parseInt(@i) + 1)</script>
                             </div>
@@ -53,14 +66,14 @@
                                 &#36;<script>document.write(parseFloat(@item.price).toFixed(2))</script>
                             </div>
                             <div class="col-2 text-secondary-d2">
-                                &#36;<script>document.write((parseInt(@item.quantity) * parseFloat(@item.price)).toFixed(2))</script>
+                                &#36;<script>document.write(parseFloat(@item.cost()).toFixed(2))</script>
                                 @receipt.if_tip_then_percent()
                             </div>
                         </div>
                     @end
                 </div>
             
-                <div class="row border-b-2 brc-default-l2"></div>
+                <!-- <div class="row border-b-2 brc-default-l2"></div> -->
             
                 <div class="row mt-3">
                     <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
@@ -112,7 +125,7 @@
                                 <span class="text-150 text-success-d3 opacity-2">
                                     &#36;<script>document.write(parseFloat(@receipt.total()).toFixed(2))</script>
                                 </span>
-                                ~ @receipt.payment_method
+                                ~@receipt.payment_method
                             </div>
                         </div>
                     </div>

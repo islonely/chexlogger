@@ -8,6 +8,12 @@ struct Item {
 	description string = '(no description provided)'
 }
 
+// cost calculates the total amount paid for an item based
+// on the quantity purchased and the price thereof
+fn (item Item) cost() f64 {
+	return item.quantity * item.price
+}
+
 // str_percentage_of calculates what percentage of `x` `item.price` is
 // and returns a human friendly string (45% instead of 0.45).
 fn (item Item) str_percentage_of(x f64) string {
@@ -26,6 +32,7 @@ fn (item Item) percentage_of(x f64) f64 {
 
 // Receipt is a list of items purchased.
 struct Receipt {
+mut:
 	description string = '(no description provided)'
 	date time.Time
 	taxes f64

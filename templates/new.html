@@ -10,50 +10,25 @@
             css and error 400 from js). I think it has something to do with
             V. I know it uses strict mime-types in certain circumstances.
         -->
-        
+        <!--         
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
             <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
-       
-        <!-- <style>
-            import url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css");
+         -->
+        <style>
+            @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css");
         </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script>
-            $.getScript('https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js', function() {
-                console.log('loaded')
-            })
-        </script> -->
-        
-        <link rel = "stylesheet" href = "/css/index.css">
-
-        <script>
-            let item_index = 1;
-            function add_item(elem) {
-                $('\
-                    <div class="row g-3">\
-                        <div class="col-md-6 mt-2">\
-                            <input class="form-control" placeholder="Description" name="item_description_' + item_index + '">\
-                        </div>\
-                        <div class="col-md-2 mt-2">\
-                            <input class="form-control" placeholder="Quantity" name="item_quantity_' + item_index + '">\
-                        </div>\
-                        <div class="col-md-2 mt-2">\
-                            <input class="form-control" placeholder="Price" name="item_price_' + item_index + '">\
-                        </div>\
-                        <div class="col-md-1 mt-2">\
-                            <button onclick="add_item(this)" type="button" class="btn btn-danger">Add</button>\
-                        </div>\
-                    </div>\
-                ').insertAfter($(elem).parent().parent())
-                $(elem).replaceWith('<button onclick="del_item(this)" type="button" class="btn btn-danger">Remove</button>')
-                item_index++
-            }
-
-            function del_item(elem) {
-                $(elem).parent().parent().remove()
-            }
+            $.getScript('https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js')
         </script>
+        
+        <link rel = "stylesheet" href = "/index.css">
+
+        <input id='fill_item_description' type="hidden" value="@fill_item_description">
+        <input id='fill_item_quantity' type="hidden" value="@fill_item_quantity">
+        <input id='fill_item_price' type="hidden" value="@fill_item_price">
+        <script src="/main.js"></script>
     </head>
     <body class = 'bg-dark'>
         <header>
@@ -74,56 +49,75 @@
             </nav>
         </header>
 
-        <div class="mt-4 bg-light mx-3">
+        <div class="mt-4 bg-light">
             <div class="row text-600 text-white bg-danger py-25">
                 <div class="col">New Receipt Entry</div>
             </div>
-
+            
             <div class="row py-3">
                 <div class="col">
-                    <form action="/new" method="post">
+                    <form id="new_receipt_form" action="/new" method="post" class="needs-validation" novalidate>
                         <div class="row g-3">
                             <div class="col-md mt-2">
-                                <textarea type="description" class="form-control" placeholder="Description" name="description"></textarea>
+                                <textarea type="description" class="form-control" placeholder="Description" name="description">@fill_description</textarea>
                             </div>
                         </div>
                         <div class="row g-3">
                             <div class="col-md mt-2">
-                                <input type="date" class="form-control" name="date">
+                                <input type="date" class="form-control" name="date" required>
+                                <div class="invalid-feedback">
+                                    Invalid date provided.
+                                </div>
                             </div>
                             <div class="col-md mt-2">
-                                <input type="time" class="form-control" name="date">
+                                <input type="time" class="form-control" name="time" required>
+                                <div class="invalid-feedback">
+                                    Invalid time provided.
+                                </div>
                             </div>
-                            <script>
-                                let d = new Date()
-                                $('input[type="date"]').val(d.toISOString().substring(0,10))
-                                $('input[type="time"]').val(d.toISOString().substring(11,16))
-                            </script>
+                            <div class="col-md-1 mt-2">
+                                <button type="button" id="datetime_now" class="form-control btn btn-danger">Now</button>
+                            </div>
                         </div>
                         <div class="row g-3">
                             <div class="col-md mt-2">
-                                <input class="form-control" placeholder="Discount" name="discount">
+                                <input class="form-control" placeholder="Discount" name="discount" value="@fill_discount">
+                                <div class="invalid-feedback">
+                                    Discount must be a decimal or integer greater than 0.
+                                </div>
                             </div>
                             <div class="col-md mt-2">
-                                <input class="form-control" placeholder="Taxes" name="taxes">
+                                <input class="form-control" placeholder="Taxes" name="taxes" value="@fill_taxes">
+                                <div class="invalid-feedback">
+                                    Taxes must be a decimal or integer greater than 0.
+                                </div>
                             </div>
                             <div class="col-md mt-2">
-                                <input class="form-control" placeholder="Payment Method" name="payment_method">
+                                <input class="form-control" placeholder="Payment Method" name="payment_method" value="@fill_payment_method">
                             </div>
                         </div>
                         <div class="row g-3">
-                            <div class="col-md-6 mt-2">
-                                <input class="form-control" placeholder="Description" name="item_description_0">
+                            <div class="col-md-7 mt-2">
+                                <input class="form-control" placeholder="Description" name="item_description_0" value="@fill_item_description">
                             </div>
                             <div class="col-md-2 mt-2">
-                                <input class="form-control" placeholder="Quantity" name="item_quantity_0">
+                                <input class="form-control" placeholder="Quantity" name="item_quantity_0" value="@fill_item_quantity" required>
+                                <div class="invalid-feedback">
+                                    Quantity must be an integer greater than 1.
+                                </div>
                             </div>
                             <div class="col-md-2 mt-2">
-                                <input class="form-control" placeholder="Price" name="item_price_0">
+                                <input class="form-control" placeholder="Price" name="item_price_0" value="@fill_item_price" required>
+                                <div class="invalid-feedback">
+                                    Price must be a decimal greater than 0.0.
+                                </div>
                             </div>
-                            <div class="col-md mt-2">
-                                <button onclick="add_item(this)" type="button" class="btn btn-danger">Add</button>
+                            <div class="col-md-1 mt-2">
+                                <button onclick="add_item(this)" type="button" class="form-control btn btn-danger">Add</button>
                             </div>
+                        </div>
+                        <div class="row g-3">
+                            <button type="submit" class="btn btn-danger">Submit</button>
                         </div>
                     </form>
                 </div>

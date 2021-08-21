@@ -20,9 +20,21 @@ const(
 	// this can be values between 1 and 65535
 	port = 4444
 
-	// this is the name of the sqlite database file
-	database_file = 'chexlogger.db'
-	// this will determine whether to store the .db file in /home/<user>/.local/share/chexlogger
-	// or in the same directory as the chexlogger application
-	store_local = true
+	// the file where your receipts are stored. If you wish to create a
+	// new database change this filename
+	dbfile = 'chexlogger.db'
+
+	// default values to autofill new receipt form with
+	auto_form_fill_description = ''
+	auto_form_fill_payment_method = ''
+	auto_form_fill_discount = ''
+	auto_form_fill_taxes = ''
+	auto_form_fill_item_description = ''
+	auto_form_fill_item_quantity = ''
+	auto_form_fill_item_price = ''
+
+	// ui theme
+	// values include red, yellow, blue, green, cyan
+	// NOTE: currently does nothing
+	theme = 'red'
 )
