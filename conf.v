@@ -4,16 +4,6 @@
  */
 
 const(
-	// the precision of currency stored into database
-	// 0: only calculate full dollars
-	// 2: the hundredth of a dollar 2.51
-	// 5: the hundred-thousandth of a dollar 2.51234
-	// this should only be values 0 to 15 (see: https://stackoverflow.com/a/28047413)
-	// values below 0 will cause the program to stop working
-	// values above 15 will have the same effect as 15
-	// WARNING: This is not working properly yet, so leave it at 2 for now
-	currency_precision = 2
-
 	// the port which the local server will be run on
 	// this doesn't matter as long as you choose a port that's
 	// not already in use on your system

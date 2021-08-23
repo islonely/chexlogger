@@ -1,5 +1,3 @@
-module main
-
 import sqlite
 import time
 import vweb
