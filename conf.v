@@ -12,7 +12,7 @@ const(
 
 	// the file where your receipts are stored. If you wish to create a
 	// new database change this filename
-	dbfile = 'chexlogger.db'
+	dbfile = 'personal.db'
 
 	// default values to autofill new receipt form with
 	auto_form_fill_description = ''

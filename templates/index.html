@@ -41,105 +41,19 @@
                             <li class="nav-item">
                                 <a class="nav-link" aria-current="page" href="/new">New Entry</a>
                             </li>
+                            <li class="nav-item">
+                                <div class="d-flex" id="search_item">
+                                    <input id="search_box" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-light" type="submit">Advanced</button>
+                                </div>
+                            </li>
                         </ul>
-                    </div>
-                    <div class="d-flex">
-                        <input id="search_box" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">Advanced</button>
                     </div>
                 </div>
             </nav>
         </header>
 
-        <section id="receipt_container">
-            @for receipt in receipts
-                <div class="receipt mt-4 bg-light">
-                    <div class="row text-600 text-white bg-danger py-25">
-                        <div class="d-none d-sm-block col-1">#</div>
-                        <div class="col-9 col-sm-5">Description</div>
-                        <div class="d-none d-sm-block col-4 col-sm-2">Qty</div>
-                        <div class="d-none d-sm-block col-sm-2">Unit Price</div>
-                        <div class="col-2">Amount</div>
-                    </div>
-                
-                    <div class="text-95 text-secondary-d3">
-                        @for i, item in receipt.items
-                            <div class="item row mb-2 mb-sm-0 py-25">
-                                <div class="d-none d-sm-block col-1">
-                                    <script>document.write(parseInt(@i) + 1)</script>
-                                </div>
-                                <div class="col-9 col-sm-5">@item.description</div>
-                                <div class="d-none d-sm-block col-2">@item.quantity</div>
-                                <div class="d-none d-sm-block col-2 text-95">
-                                    &#36;<script>document.write(parseFloat(@item.price).toFixed(2))</script>
-                                </div>
-                                <div class="col-2 text-secondary-d2">
-                                    &#36;<script>document.write(parseFloat(@item.cost()).toFixed(2))</script>
-                                    @receipt.if_tip_then_percent()
-                                </div>
-                            </div>
-                        @end
-                    </div>
-                
-                    <!-- <div class="row border-b-2 brc-default-l2"></div> -->
-                
-                    <div class="row mt-3">
-                        <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
-                            <p>@receipt.description</p>
-                            <small style="position: absolute; bottom: 7px;" class="text-muted">@receipt.date.str()</small>
-                        </div>
-                
-                        <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
-                            <div class="row my-2">
-                                <div class="col-7 text-right">
-                                    Subtotal
-                                </div>
-                                <div class="col-5">
-                                    <span class="text-120 text-muted">
-                                        &#36;<script>document.write(parseFloat(@receipt.subtotal()).toFixed(2))</script>
-                                    </span>
-                                </div>
-                            </div>
-                
-                            @if receipt.discount != 0.0
-                                <div class="row my-2">
-                                    <div class="col-7 text-right">
-                                        Discount
-                                    </div>
-                                    <div class="col-5">
-                                        <span class="text-120 text-muted">
-                                            &#36;<script>document.write(parseFloat(@receipt.discount).toFixed(2))</script>
-                                        </span>
-                                    </div>
-                                </div>
-                            @end
-                
-                            <div class="row my-2">
-                                <div class="col-7 text-right">
-                                    Tax
-                                </div>
-                                <div class="col-5">
-                                    <span class="text-110 text-muted">
-                                        &#36;<script>document.write(parseFloat(@receipt.taxes).toFixed(2))</script>
-                                    </span>
-                                </div>
-                            </div>
-                
-                            <div class="row my-2 align-items-center bgc-primary-l3 p-2" id="total">
-                                <div class="col-7 text-right">
-                                    Total
-                                </div>
-                                <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2">
-                                        &#36;<script>document.write(parseFloat(@receipt.total()).toFixed(2))</script>
-                                    </span>
-                                    ~@receipt.payment_method
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @end
-        </section>
+        <section id="receipt_container"></section>
+        <script>index()</script>
     </body>
 </html>

@@ -9,6 +9,7 @@
 
 .receipt {
     position: relative;
+    margin: 1%;
 }
 
 .item {
@@ -33,16 +34,30 @@
     background-size: calc(.75em + .375rem) calc(.75em + .375rem) !important;
 }
 
-body > div {
-    max-width: 1200px;
-    margin: 0 auto;
+section#receipt_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 10px 15px;
+    padding: 0 1%;
 }
 
-@media only screen and (max-width: 1240px) {
-    body > div {
-        margin: 0 20px;
-    }
+section#receipt_container > div {
+    flex: 48%;
+    max-width: 1300px;
+    min-width: 480px;
 }
+
+@media only screen and (max-width: 540px) {
+} 
+
+@media only screen and (min-width: 992px) {
+    #search_item {
+        position: absolute;
+        right: 10px;
+        top: 12px;
+    }
+} 
 
 .mt-4 {
     border-radius: 3px;

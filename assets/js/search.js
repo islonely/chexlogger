@@ -6,17 +6,34 @@ $(document).ready(function() {
             dataType: 'json',
 
             success: function(res) {
-                $('section#receipt_container').html('')
-                res.forEach(receipt => $('section#receipt_container').append(parse_receipt(receipt)))
+                $('section#receipt_container').html(parseReceipts(res))
             },
 
             err: function(res) {
-                console.log(err)
+                console.log(res)
             }
         })
     })
 })
 
-function parse_receipt(receipt) {
+function parseReceipts(receipts) {
+    let html = ''
+    receipts.forEach(receipt => html += new Receipt(receipt).html())
+    return html
+}
 
+function index() {
+    $.post({
+        url: '/search',
+        data: {all: true},
+        dataType: 'json',
+
+        success: function(res) {
+            $('section#receipt_container').html(parseReceipts(res))
+        },
+
+        err: function(res) {
+            console.log(res)
+        }
+    })
 }

@@ -130,48 +130,6 @@ pub fn (mut app App) new_entry() vweb.Result {
 	return app.redirect('/')
 }
 
-// parse_rows converts each row/receipts received from SQLite database
-// into a corresponding Receit object
-fn parse_rows(db sqlite.DB, rows []sqlite.Row) []Receipt {
-	mut receipts := []Receipt{}
-
-	for row in rows {
-		// items are in a seperate table than receipts so we have to fetch them with another query
-		query := 'SELECT * FROM items WHERE receiptid = ' + row.vals[0] + ';'
-		item_rows, err := db.exec(query)
-		$if debug {
-			println(divider)
-			println('SQLite Query: $query')
-			println('SQLite Response: ' + sqlite_err_to_string(err))
-		}
-		handle_sqlite_err(err)
-		
-		// convert []sqlite.Row to []Item
-		mut items := []Item{}
-		for irow in item_rows {
-			item := Item{
-				description: irow.vals[1]
-				quantity: irow.vals[2].int()
-				price: irow.vals[3].f64() / currency_multiplier
-			}
-			items << item
-		}
-		
-		// convert []sqlite.Row to []Receipt
-		mut receipt := Receipt{
-			description: row.vals[1]
-			date: time.parse(row.vals[2]) or {time.Time{}}
-			taxes: row.vals[3].f64() / currency_multiplier
-			discount: row.vals[4].f64() / currency_multiplier
-			payment_method: row.vals[5]
-			items: items
-		}
-		receipts << receipt
-	}
-
-	return receipts
-}
-
 fn insert_receipt_into_database(receipt Receipt) {
 	mut db := sqlite.connect(dbfile) or {
 		println('Err: Failed to connect to SQLite database. This usually means the .db file is missing or corrupted.')
